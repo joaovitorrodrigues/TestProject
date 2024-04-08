@@ -1,0 +1,91 @@
+﻿@using TestProject.Domain.Enums;
+@model IEnumerable<TestProject.Web.Models.OrderViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<h1>Orders</h1>
+@{
+    var resultErrorMessage = TempData["ResultErrorMessage"] as string ?? "";
+    var resultSuccessMessage = TempData["ResultSuccessMessage"] as string ?? "";
+}
+
+<div id="alerts">
+    @if (!string.IsNullOrEmpty(resultErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @resultErrorMessage
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(resultSuccessMessage))
+    {
+        <div class="alert alert-success" role="alert">
+            @resultSuccessMessage
+        </div>
+    }
+</div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LicensePlate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LicensePlate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.Raw(item.CreationDate.ToShortDateString())
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.Raw(EnumHelper.GetDescription(item.Status))
+            </td>
+            <td>
+                @if (item.Status == StatusType.Available)
+                    @Html.ActionLink("Accept Order", "GetOrder", new { id = item.Id }) 
+                @if (item.Status == StatusType.Accepted && User.Identity.Name == item.UserName)
+                    @Html.ActionLink("Deliver order", "Deliver", new { id = item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#alerts').fadeOut('slow');
+            }, 3000);
+        });
+    </script>
+}

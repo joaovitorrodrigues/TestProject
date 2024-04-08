@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>SignalR Notification</title>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+</head>
+<body>
+    <div id="notificationArea"></div>
+
+ @*   <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/notificationHub")
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+        
+        connection.on("ReceiveMessage", function (message) {
+            console.log("teste")
+            const notificationArea = document.getElementById("notificationArea");
+            const newNotification = document.createElement("div");
+            newNotification.textContent = "Nova notificação recebida: " + message;
+            console.log(message);
+            notificationArea.appendChild(newNotification);
+        });
+
+        connection.start()
+            .then(() => console.log("Conexão SignalR estabelecida com sucesso"))
+            .catch(err => console.error("Erro ao estabelecer conexão SignalR:", err));
+    </script>*@
+</body>
+</html>

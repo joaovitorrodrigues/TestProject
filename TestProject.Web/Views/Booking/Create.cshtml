@@ -1,0 +1,71 @@
+﻿@model TestProject.Web.Models.BookingViewModel
+
+@{
+    ViewData["Title"] = "Book";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Booking</h1>
+@{
+    var resultErrorMessage = TempData["ResultErrorMessage"] as string ?? "";
+}
+
+<div id="alerts">
+    @if (!string.IsNullOrEmpty(resultErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @resultErrorMessage
+        </div>
+    }
+</div>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Confirm" asp-controller="Booking" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="MotorcycleId" type="hidden"/>
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" type="date" step="1" readonly />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" type="date" step="1" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Days" class="control-label"></label>
+                <select asp-for="Days" class="form-control">
+                    <option value="">Select...</option>
+                    <option value="7"> 7 days, R$ 30,00 per day</option>
+                    <option value="15"> 15 days, R$ 28,00 per day</option>
+                    <option value="30"> 30 days, R$ 22,00 per day</option>
+                </select>
+                <span asp-validation-for="Days" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#alerts').fadeOut('slow');
+            }, 3000);
+        });
+    </script>
+
+}
+
